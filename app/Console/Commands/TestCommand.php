@@ -41,20 +41,15 @@ class TestCommand extends Command
     public function handle()
     {
         try {
+            $targets1 = $this->doStrToArray('180,373,496,638,609,439,316,350,464,540,547,455,500,305');
+            $targets2 = $this->doStrToArray('258,420,500,602,516,396,345,345,442,509,493,471,393,281');
 
-            $str = '258	420	500	602	516	396	345	345	442	509	493	471	393	281';
-            print_r(explode($str, ' '));
-dd(1);
-            [
-                ['180'], ['373'],['496'], ['638'],['609'], ['439'], ['316'],['350'],['464'], ['540'],['547'],  ['455'],['500'],['305'],
-                [
+            $targets = $targets1;
 
-                ]
-            ];
-
-            $targets = [
-
-            ];
+//            $targets = [
+//                ['180'], ['373'],['496'], ['638'],['609'], ['439'], ['316'],['350'],['464'], ['540'],['547'],  ['455'],['500'],['305'],
+//            ];
+            print_r($targets);
             foreach ($targets as &$target){
                 $target = intval($target[0]);
             }
@@ -72,7 +67,7 @@ dd(1);
             $regression = new LeastSquares();
             $regression->train($samples, $targets);
 
-            $nextDay = $hour;
+            $nextDay = 8;
             $nextDayHigh = $regression->predict([$nextDay]);
 
             foreach ($samples as $key => $val) {
@@ -131,5 +126,18 @@ dd(1);
 
 //        logger(' k = '.$K);
 //        logger(' b = '.$b);
+    }
+
+    public function doStrToArray($str)
+    {
+        $str = explode(',', $str);
+        $data = [];
+        foreach ($str as $val) {
+            $data[] = [
+                ltrim(rtrim($val, ''), '')
+            ];
+        }
+
+        return $data;
     }
 }
